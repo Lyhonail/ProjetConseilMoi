@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+    <TextView
+        android:text="HISTORIQUE"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewHistoriqueTitre"
+        android:gravity="center"
+        android:textColor="#AAAAAA" />
+    <LinearLayout
+        android:id="@+id/menuHistorique"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1"
+        android:gravity="center|bottom">
+        <ImageView
+            android:src="@drawable/Profil"
+            android:layout_width="50dp"
+            android:id="@+id/imageViewHistoriqueProfil"
+            android:layout_height="50dp"
+            android:clickable="true" />
+        <ImageView
+            android:src="@drawable/Historique"
+            android:layout_width="50dp"
+            android:id="@+id/imageViewHistoriqueHistorique"
+            android:layout_height="50dp"
+            android:clickable="true"
+            android:layout_marginLeft="10dp" />
+        <ImageView
+            android:src="@drawable/scan"
+            android:layout_width="50dp"
+            android:id="@+id/imageViewHistoriqueScann"
+            android:layout_height="50dp"
+            android:clickable="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp" />
+        <ImageView
+            android:src="@drawable/Synthese"
+            android:layout_width="50dp"
+            android:id="@+id/imageViewHistoriqueConseil"
+            android:layout_height="50dp"
+            android:clickable="true"
+            android:layout_marginRight="10.0dp" />
+        <ImageView
+            android:src="@drawable/iconetest"
+            android:layout_width="50dp"
+            android:id="@+id/imageViewHistoriqueAvertissement"
+            android:layout_height="50dp"
+            android:clickable="true" />
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+    <TextView
+        android:text="Profile"
+        android:layout_width="match_parent"
+        android:layout_height="49.5dp"
+        android:id="@+id/textView1"
+        android:gravity="center"
+        android:textColor="#000000"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="91.0dp"
+        android:id="@+id/linearLayout1"
+        android:gravity="center">
+        <Button
+            android:text="Personnel"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/button1" />
+        <Button
+            android:text="Famille"
+            android:layout_width="94.5dp"
+            android:layout_height="match_parent"
+            android:id="@+id/button2" />
+        <Button
+            android:text="Mes Invités"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/button3" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:layout_height="163.0dp"
+        android:id="@+id/linearLayoutProfile" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:layout_height="140.0dp"
+        android:id="@+id/linearLayoutBilanDesCirters" />
+    <LinearLayout
+        android:id="@+id/menuProfil"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1"
+        android:gravity="center|bottom">
+        <ImageView
+            android:src="@drawable/Profil"
+            android:layout_width="50dp"
+            android:id="@+id/imageViewProfilProfil"
+            android:layout_height="50dp"
+            android:clickable="true" />
+        <ImageView
+            android:src="@drawable/Historique"
+            android:layout_width="50dp"
+            android:id="@+id/imageViewProfilHistorique"
+            android:layout_height="50dp"
+            android:clickable="true"
+            android:layout_marginLeft="10dp" />
+        <ImageView
+            android:src="@drawable/scan"
+            android:layout_width="50dp"
+            android:id="@+id/imageViewProfilScann"
+            android:layout_height="50dp"
+            android:clickable="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp" />
+        <ImageView
+            android:src="@drawable/Synthese"
+            android:layout_width="50dp"
+            android:id="@+id/imageViewProfilConseil"
+            android:layout_height="50dp"
+            android:clickable="true"
+            android:layout_marginRight="10.0dp" />
+        <ImageView
+            android:src="@drawable/iconetest"
+            android:layout_width="50dp"
+            android:id="@+id/imageViewProfilAvertissement"
+            android:layout_height="50dp"
+            android:clickable="true" />
+    </LinearLayout>
+</LinearLayout>
