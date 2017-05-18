@@ -36,5 +36,7 @@ namespace conseilMoi.Resources.Classes
         {
             return id_produit;
         }
+
+
     }
 }
