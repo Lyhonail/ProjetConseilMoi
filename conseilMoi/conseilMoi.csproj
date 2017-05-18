@@ -82,6 +82,7 @@
     <Compile Include="MainActivity.cs" />
     <Compile Include="Produit.cs" />
     <Compile Include="Profil.cs" />
+    <Compile Include="Resources\Classes\Allergene.cs" />
     <Compile Include="Resources\Classes\Produits.cs" />
     <Compile Include="Resources\MaBase\MaBase.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />

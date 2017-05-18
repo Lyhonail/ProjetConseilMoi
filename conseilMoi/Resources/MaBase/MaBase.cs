@@ -122,12 +122,51 @@ namespace conseilMoi.Resources.MaBase
             try
             {
                this.ConnexionOpen();
-                string sql = "select id_produit, product_name from produit where id_produit = "+p+"; ";
+                //Selection du produit
+                string sql = "select id_produit, product_name, generic_name from produit where id_produit = "+p+"; ";
                 SqliteCommand commanda = new SqliteCommand(sql, connexion);
                 SqliteDataReader result = commanda.ExecuteReader();
                 result.Read();
                 Produits produits = new Produits();
-                produits.SetProduits(result.GetString(0).ToString(), result.GetString(1).ToString());
+                produits.SetProduits(result.GetString(0).ToString(), result.GetString(1).ToString(), result.GetString(2).ToString());
+                result.Close();
+
+                //recherche de tous les allergenes qui composent le produit
+                string sql_allergene = "select id_allergene from compo_allergene where id_produit  = " + p + "; ";
+                SqliteCommand command_allergene = new SqliteCommand(sql_allergene, connexion);
+                SqliteDataReader result_allergene = command_allergene.ExecuteReader();
+                while (result.Read())
+                {
+                    produits.AddAllergene(result.GetDecimal(0).ToString());
+                }
+
+                //recherche de tous les nutriments qui composent le produit
+                string sql_nutriment = "select id_nutriment from compo_nutriment where id_produit  = " + p + "; ";
+                SqliteCommand command_nutriment = new SqliteCommand(sql_nutriment, connexion);
+                SqliteDataReader result_nutriment = command_nutriment.ExecuteReader();
+                while (result.Read())
+                {
+                    produits.AddNutriment(result.GetString(0).ToString());
+                }
+
+                //Recherche d'allergène
+                string sql_recherche_allergene =
+                    " select PU.ID_typeProfil, PU.ID_profil, PU.ID_critere, valeur, SEUIL_VERT, SEUIL_ORANGE, SEUIL_ROUGE " +
+                    " from profil_utilisateur PU, compo_allergene CA " +
+                    " where PU.ID_critere = CA.ID_allergene " +
+                    " AND CA.id_produit = " + p + "; ";
+                SqliteCommand command_recherche_allergene = new SqliteCommand(sql_nutriment, connexion);
+                SqliteDataReader result_recherche_allergene = command_recherche_allergene.ExecuteReader();
+                while (result_recherche_allergene.Read())
+                {
+                    produits.AddCheckAllergene(result_recherche_allergene.GetString(2).ToString(), 
+                                               result_recherche_allergene.GetString(0).ToString(), 
+                                               result_recherche_allergene.GetString(1).ToString());
+                }
+                //Fin recherche d'allergene
+
+
+
 
                 //on retourne le produit en entier
                 return produits;
@@ -137,7 +176,7 @@ namespace conseilMoi.Resources.MaBase
             {
                 //pas de résultat, on va donc créer un produit vide qui renvoie l'information "aucun produit"
                 Produits produits = new Produits();
-                produits.SetProduits("000", "erreur");
+                produits.SetProduits("000", "erreur", "erreur");
                 return produits;
             }
             //Fermeture de la connexion
