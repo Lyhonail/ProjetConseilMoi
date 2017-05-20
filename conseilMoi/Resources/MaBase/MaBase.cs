@@ -18,7 +18,7 @@ using conseilMoi.Resources.Classes;
 namespace conseilMoi.Resources.MaBase
 {
     class MaBase
-        { 
+    {
         //déclaration des variables de la classe
         String path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal); //chemin d'enregistrement de la base
         String maBase; //contient 'path' + le nom de la base - utilisé pour la connexion -
@@ -121,9 +121,9 @@ namespace conseilMoi.Resources.MaBase
         {
             try
             {
-               this.ConnexionOpen();
+                this.ConnexionOpen();
                 //Selection du produit
-                string sql = "select id_produit, product_name, generic_name from produit where id_produit = "+p+"; ";
+                string sql = "select id_produit, product_name, generic_name from produit where id_produit = " + p + "; ";
                 SqliteCommand commanda = new SqliteCommand(sql, connexion);
                 SqliteDataReader result = commanda.ExecuteReader();
                 result.Read();
@@ -132,42 +132,42 @@ namespace conseilMoi.Resources.MaBase
                 result.Close();
 
                 //recherche de tous les allergenes qui composent le produit
-                string sql_allergene = "select id_allergene from compo_allergene where id_produit  = " + p + "; ";
+                string sql_allergene = "select id_allergene from compo_allergene where id_produit  = '" + p + "'; ";
                 SqliteCommand command_allergene = new SqliteCommand(sql_allergene, connexion);
                 SqliteDataReader result_allergene = command_allergene.ExecuteReader();
-                while (result.Read())
+                while (result_allergene.Read())
                 {
-                    produits.AddAllergene(result.GetDecimal(0).ToString());
+                    produits.AddAllergene(result_allergene.GetInt32(0).ToString());
+                    //produits.AddAllergene("100");
                 }
+                result_allergene.Close();
 
                 //recherche de tous les nutriments qui composent le produit
-                string sql_nutriment = "select id_nutriment from compo_nutriment where id_produit  = " + p + "; ";
+                string sql_nutriment = "select id_nutriment from compo_nutriment where id_produit  = '" + p + "'; ";
                 SqliteCommand command_nutriment = new SqliteCommand(sql_nutriment, connexion);
                 SqliteDataReader result_nutriment = command_nutriment.ExecuteReader();
-                while (result.Read())
+                while (result_nutriment.Read())
                 {
-                    produits.AddNutriment(result.GetString(0).ToString());
+                    produits.AddNutriment(result_nutriment.GetString(0));
                 }
+                result_nutriment.Close();
 
-                //Recherche d'allergène
+                //Recherche d'allergène qui matchent avec les critères du profil
                 string sql_recherche_allergene =
-                    " select PU.ID_typeProfil, PU.ID_profil, PU.ID_critere, valeur, SEUIL_VERT, SEUIL_ORANGE, SEUIL_ROUGE " +
+                    " select PU.ID_typeProfil, PU.ID_profil, PU.ID_critere " +
                     " from profil_utilisateur PU, compo_allergene CA " +
                     " where PU.ID_critere = CA.ID_allergene " +
-                    " AND CA.id_produit = " + p + "; ";
-                SqliteCommand command_recherche_allergene = new SqliteCommand(sql_nutriment, connexion);
+                    " AND CA.id_produit = '" + p + "'; ";
+                SqliteCommand command_recherche_allergene = new SqliteCommand(sql_recherche_allergene, connexion);
                 SqliteDataReader result_recherche_allergene = command_recherche_allergene.ExecuteReader();
                 while (result_recherche_allergene.Read())
                 {
-                    produits.AddCheckAllergene(result_recherche_allergene.GetString(2).ToString(), 
-                                               result_recherche_allergene.GetString(0).ToString(), 
+                    produits.AddCheckAllergene(result_recherche_allergene.GetString(2).ToString(),
+                                               result_recherche_allergene.GetString(0).ToString(),
                                                result_recherche_allergene.GetString(1).ToString());
                 }
                 //Fin recherche d'allergene
-
-
-
-
+                result_recherche_allergene.Close();
                 //on retourne le produit en entier
                 return produits;
             }
@@ -186,6 +186,46 @@ namespace conseilMoi.Resources.MaBase
             }
         }// fin CreerTableProfil
 
+
+        //Scann d'un produit --> Ajout dans l'historique
+        public string InsertIntoHistorique(String id_typeProfil, String id_produit)
+        {
+            //On tente d'abbord de modifier un enregistrement qui existerai déjà : la date et les produit  de substitution
+            try
+            {
+                this.ConnexionOpen();
+                SqliteCommand command = connexion.CreateCommand();
+                command.CommandText = "update historique set  date = datetime() where id_typeProfil='" + id_typeProfil + "' and id_produit='" + id_produit + "' ";
+
+                command.ExecuteNonQuery();
+                connexion.Close();
+                return "Ok";
+            }
+            //Si le couple id_produit et id_typeProfil n'existe pas = on le créer
+            catch
+            {
+                try
+                {
+                    this.ConnexionOpen();
+                    SqliteCommand command = connexion.CreateCommand();
+                    command.CommandText = "insert into historique (id_typeProfil, id_produit, date) values ( '" + id_typeProfil + "', '" + id_produit + "', datetime() );";
+
+                    command.ExecuteNonQuery();
+                    connexion.Close();
+                    return "modifie";
+                }
+                catch
+                {
+                    return "Erreur";
+                }
+
+            }
+            //Fermeture de la connexion
+            finally
+            {
+                this.ConnexionClose();
+            }
+        }// fin CreerTableProfil
 
 
 

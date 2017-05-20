@@ -23,15 +23,20 @@ namespace conseilMoi
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.Produit);
 
-            //initialise le scanner de code barre
-            MobileBarcodeScanner.Initialize(Application);
-            
-            //Récupère le ID_Produit lorsque l'on scanne un produit
-            string IDproduit = Intent.GetStringExtra("IDproduit") ?? "Data not available";
-
             //initialise la classe MaBase et connecte la base de donnnées
             MaBase db = new MaBase();
             db.ExistBase();
+
+            //initialise le scanner de code barre
+            MobileBarcodeScanner.Initialize(Application);
+
+            //Récupère le ID_Produit lorsque l'on scanne un produit
+            string IDproduit = Intent.GetStringExtra("IDproduit") ?? "Data not available";
+            string IDTypeProfil = "PERS";
+
+            //Fait un enregistrement dans historique
+            db.InsertIntoHistorique(IDTypeProfil, IDproduit);
+
 
             //chargement des variables des boutons et textViews
             var menuProfil = FindViewById<ImageView>(Resource.Id.imageViewProduitProfil);
@@ -41,16 +46,24 @@ namespace conseilMoi
             var menuAvertissement = FindViewById<ImageView>(Resource.Id.imageViewProduitAvertissement);
             var txtIdProduit = FindViewById<TextView>(Resource.Id.textViewIdProduit);
             var txtInfoScan = FindViewById<TextView>(Resource.Id.textViewInfoScan);
+            var txtInfoAllergene = FindViewById<TextView>(Resource.Id.textViewInfoAlergene);
 
             //On charge le produit Le IdProduit va dans le texteView IdProduit 
             //On créer d'abbord un objet produit qui contiendra tout le contenu du produit
             Produits produits = new Produits();
             produits = db.SelectIdProduit(IDproduit);
 
-            txtIdProduit.Text ="Id : "+ produits.GetId_Produit()+", Nom : "+ produits.GetProduct_name();
-            txtInfoScan.Text = "Code scanné : "+IDproduit;
+            txtIdProduit.Text = "Id : " + produits.GetId_Produit() + ", Nom : " + produits.GetProduct_name();
+            txtInfoScan.Text = "Code scanné : " + IDproduit;
+            //txtInfoAllergene.Text = produits.GetAllergenes();
+            //txtInfoAllergene.Text = produits.GetNutriments();
 
+            List<Allergene> ListAl = new List<Allergene>();
 
+            ListAl = produits.GetCheckAllergene();
+
+            if (ListAl[0].GetIdAlergene() == "") { txtInfoAllergene.Text = "pas d'allergene"; }
+            else { txtInfoAllergene.Text = "contient allergene correspondant a votre profil !"; }
 
             //Lorsque l'on clique sur le bouton menuProfil
             menuProfil.Click += delegate
@@ -94,6 +107,6 @@ namespace conseilMoi
                 StartActivity(typeof(Avertissement));
             };
         }
-        
+
     }
 }

@@ -20,10 +20,10 @@ namespace conseilMoi
     [Activity(Label = "Avertissement")]
     public class Avertissement : Activity
     {
-        
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            
+
             base.OnCreate(savedInstanceState);
             MaBase db = new MaBase();
             db.ExistBase();
@@ -51,9 +51,9 @@ namespace conseilMoi
                 SqliteConnection.CreateFile(dbFile);
 
                 var s = Resources.OpenRawResource(Resource.Raw.data);  // DATA FILE RESOURCE ID
-                    FileStream writeStream = new FileStream(dbFile, FileMode.OpenOrCreate, FileAccess.Write);
-                    ReadWriteStream(s, writeStream);
-                
+                FileStream writeStream = new FileStream(dbFile, FileMode.OpenOrCreate, FileAccess.Write);
+                ReadWriteStream(s, writeStream);
+
             };
 
             Produits produits = new Produits();
@@ -70,15 +70,22 @@ namespace conseilMoi
             {
                 StartActivity(typeof(Historique));
             };
-           
+
             menuConseil.Click += delegate
             {
                 StartActivity(typeof(Conseil));
             };
 
+
+
+
+
+            /* Phase test on envoie simplement un numero de produit test en attendant la version finale
             //Clik sur le bouton scanner
             menuScanner.Click += async (sender, e) =>
             {
+
+               
                 var scanner = new ZXing.Mobile.MobileBarcodeScanner();
                 var result = await scanner.Scan();
                 if (result != null)
@@ -89,12 +96,26 @@ namespace conseilMoi
                     StartActivity(produit);
                 }
                 else { }
+                
+            }; */
+            //Clik sur le bouton scanner
+            menuScanner.Click += delegate
+            {
+
+                //Intent garde la variable ID Produit et la transmet à l'activité Produit
+                Intent produit = new Intent(this, typeof(Produit));
+                produit.PutExtra("IDproduit", "2000000010281");
+                StartActivity(produit);
+
+
+
             };
 
 
-            
 
-    }
+
+
+        }
 
 
         private void ReadWriteStream(Stream readStream, Stream writeStream)

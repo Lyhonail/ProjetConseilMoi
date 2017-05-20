@@ -45,16 +45,23 @@
         <TextView
             android:text="Large Text"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_width="300dp"
-            android:layout_height="90dp"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
             android:id="@+id/textViewIdProduit"
             android:textColor="#000000" />
         <TextView
             android:text="Large Text"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_width="300dp"
-            android:layout_height="90dp"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
             android:id="@+id/textViewInfoScan"
+            android:textColor="#000000" />
+        <TextView
+            android:text="Large Text"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:id="@+id/textViewInfoAlergene"
             android:textColor="#000000" />
     </LinearLayout>
     <LinearLayout
